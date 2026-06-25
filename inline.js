@@ -144,6 +144,7 @@
       '<span class="inline-dot"></span>' +
       '<span class="inline-label">inline</span>' +
       '<span class="inline-count" id="inline-count"></span>' +
+      '<button type="button" data-act="save" class="inline-primary">save</button>' +
       '<button type="button" data-act="copy">copy changes</button>' +
       '<button type="button" data-act="reset">reset</button>' +
       '<button type="button" data-act="done">done</button>';
@@ -151,7 +152,8 @@
       const b = e.target.closest("button");
       if (!b) return;
       const act = b.dataset.act;
-      if (act === "copy") copyChanges(b);
+      if (act === "save") saveToFile(b);
+      else if (act === "copy") copyChanges(b);
       else if (act === "reset") resetAll();
       else if (act === "done") disable();
     });
@@ -163,6 +165,57 @@
     if (!c) return;
     const n = Object.keys(store).length;
     c.textContent = n === 0 ? "no edits yet" : n === 1 ? "1 edit" : n + " edits";
+  }
+
+  // permanently write edits back to the source file, via the inline save server
+  // (node server.js) or any endpoint you point data-save at.
+  async function saveToFile(btn) {
+    const edits = [];
+    document.querySelectorAll(".inline-field").forEach((el) => {
+      const orig = el.dataset.inlineOrig;
+      if (orig != null && el.textContent !== orig)
+        edits.push({ key: keyFor(el), old: orig, new: el.textContent });
+    });
+    if (!edits.length) {
+      flashBtn(btn, "nothing to save");
+      return;
+    }
+    const endpoint = cfg.save || "/__inline/save";
+    btn.textContent = "saving…";
+    btn.disabled = true;
+    try {
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ path: location.pathname, edits }),
+      });
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      // success: the file is now the source of truth — bake new values as the
+      // baseline and clear the local override cache.
+      document.querySelectorAll(".inline-field").forEach((el) => {
+        el.dataset.inlineOrig = el.textContent;
+      });
+      store = {};
+      save(store);
+      updateCount();
+      flashBtn(btn, "saved ✓");
+    } catch (err) {
+      flashBtn(btn, "no save server", 2400);
+      console.warn(
+        "[inline] save failed. run the inline server (`node server.js`) to write " +
+          "files on disk, or set data-save to your own endpoint. meanwhile, " +
+          "'copy changes' gives you the JSON to paste into source.",
+        err
+      );
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  function flashBtn(btn, label, ms) {
+    const t = btn.dataset.act === "save" ? "save" : btn.textContent;
+    btn.textContent = label;
+    setTimeout(() => (btn.textContent = t), ms || 1300);
   }
 
   function copyChanges(btn) {
@@ -213,6 +266,9 @@
       #inline-bar .inline-count{color:rgba(255,255,255,.55);margin-right:.2rem}
       #inline-bar button{font:inherit;color:#fff;background:rgba(255,255,255,.12);border:0;border-radius:999px;padding:.4rem .7rem;cursor:pointer;transition:background .15s ease}
       #inline-bar button:hover{background:rgba(255,255,255,.22)}
+      #inline-bar button.inline-primary{background:#1ad18a;color:#07130d;font-weight:600}
+      #inline-bar button.inline-primary:hover{background:#39e0a4}
+      #inline-bar button:disabled{opacity:.6;cursor:default}
       @keyframes inlinePulse{0%{box-shadow:0 0 0 0 rgba(26,209,138,.5)}70%{box-shadow:0 0 0 7px rgba(26,209,138,0)}100%{box-shadow:0 0 0 0 rgba(26,209,138,0)}}
       @media (prefers-reduced-motion: reduce){#inline-bar .inline-dot{animation:none}}
     `;
