@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>inline — edit text on any page, in place</title>
+    <meta name="description" content="a tiny, zero-dependency drop-in: click any text on a page and edit it inline." />
+    <style>
+      :root { --ink:#16150f; --muted:#7d786e; --line:rgba(20,18,12,.12); --paper:#fcfbf8; }
+      * { box-sizing: border-box; }
+      body{margin:0;background:var(--paper);color:var(--ink);
+        font:17px/1.6 -apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+        padding:clamp(2rem,6vw,5rem) clamp(1.2rem,5vw,3rem) 8rem;-webkit-font-smoothing:antialiased}
+      .wrap{max-width:42rem;margin:0 auto}
+      h1{font-size:clamp(2rem,5vw,2.6rem);margin:0 0 .2rem;letter-spacing:-.02em}
+      .lede{color:var(--muted);font-size:1.15rem;margin:0 0 2.4rem}
+      h2{font-size:1.05rem;letter-spacing:.02em;margin:2.4rem 0 .6rem}
+      p{margin:0 0 1rem}
+      code,pre{font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
+      pre{background:#15140f;color:#f4f1e8;padding:1rem 1.1rem;border-radius:10px;overflow:auto;line-height:1.5}
+      kbd{font-family:inherit;background:#fff;border:1px solid var(--line);border-bottom-width:2px;border-radius:6px;padding:.05em .45em;font-size:.85em}
+      .try{display:inline-flex;align-items:center;gap:.5rem;margin:.4rem 0 1.4rem;
+        font:inherit;background:var(--ink);color:var(--paper);border:0;border-radius:999px;padding:.6rem 1.1rem;cursor:pointer}
+      .try:hover{opacity:.88}
+      .demo{border:1px solid var(--line);border-radius:14px;padding:1.6rem 1.8rem;background:#fff;margin:1rem 0 2rem}
+      .demo h3{font-family:Georgia,serif;font-size:1.5rem;margin:.2rem 0 .6rem}
+      .demo .by{color:var(--muted);font-size:.95rem}
+      a{color:inherit}
+      footer{color:var(--muted);font-size:.9rem;margin-top:3rem;border-top:1px solid var(--line);padding-top:1.2rem}
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>inline</h1>
+      <p class="lede" data-inline-skip>edit the text on any page, in place. one file, no dependencies.</p>
+
+      <button class="try" type="button" onclick="window.Inline && window.Inline.toggle()">try edit mode →</button>
+      <p data-inline-skip style="color:var(--muted);font-size:.95rem;margin-top:-.6rem">
+        …or add <code>?edit</code> to the url, or press <kbd>⌘/Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>E</kbd>.
+        click any line below, type, and watch the toolbar count your edits. hit
+        <em>copy changes</em> to get the JSON. reload — your edits stick (they live in this browser).
+      </p>
+
+      <section class="demo">
+        <h3>a little demo</h3>
+        <p class="by">edit any of this →</p>
+        <p>this paragraph is editable. so is the heading above it, and the caption.</p>
+        <p>inline only ever touches the <em>text</em> — your tags, links, and layout are left exactly as they were.</p>
+      </section>
+
+      <h2>drop it in</h2>
+      <pre>&lt;script src="inline.js"&gt;&lt;/script&gt;</pre>
+      <p data-inline-skip>that's the whole install. then enable edit mode any of three ways:</p>
+      <pre>?edit            # add to the url
+⌘/Ctrl+Shift+E   # keyboard toggle
+Inline.toggle()  # from the console / your own button</pre>
+
+      <h2>how it works</h2>
+      <p data-inline-skip>
+        every leaf line of text becomes <code>contenteditable</code> (plaintext-only, so markup
+        can't be mangled). edits are saved to <code>localStorage</code>, keyed by a stable path, and
+        re-applied on every load — so they persist in your browser. <em>copy changes</em> hands you a
+        JSON map of <code>{ "selector": "new text" }</code> to paste back into your source and commit.
+      </p>
+
+      <h2>configure</h2>
+      <pre>&lt;script src="inline.js"
+  data-selector="h1,h2,p,li"   &lt;!-- which elements are editable --&gt;
+  data-auto="1"&gt;              &lt;!-- start in edit mode --&gt;
+&lt;/script&gt;</pre>
+      <p data-inline-skip>mark anything you don't want touched with <code>data-inline-skip</code>.</p>
+
+      <footer data-inline-skip>
+        made by <a href="https://github.com/theelinumbriel">elisa</a> · MIT
+      </footer>
+    </div>
+
+    <script src="inline.js"></script>
+  </body>
+</html>
