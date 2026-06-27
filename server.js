@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /*
- * inline server — serve a folder of static files AND let `inline`'s save button
+ * inline server -- serve a folder of static files AND let `inline`'s save button
  * write edits back to the source files on disk. zero dependencies.
  *
  *   node server.js [--port 5173] [--dir .]

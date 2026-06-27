@@ -1,5 +1,5 @@
 /*!
- * inline — edit the text on any page, in place. zero dependencies, one file.
+ * inline -- edit the text on any page, in place. zero dependencies, one file.
  *
  * drop it in:
  *   <script src="inline.js"></script>
@@ -18,7 +18,7 @@
   const cfg = (script && script.dataset) || {};
 
   // editable element types. we only ever touch *leaf* text (an element with no
-  // child elements), so structure and markup are never mangled — "just the text".
+  // child elements), so structure and markup are never mangled -- "just the text".
   const SELECTOR =
     cfg.selector ||
     "h1,h2,h3,h4,h5,h6,p,li,blockquote,figcaption,a,span,small,em,strong,td,th,dd,dt,label,button";
@@ -190,7 +190,7 @@
         body: JSON.stringify({ path: location.pathname, edits }),
       });
       if (!res.ok) throw new Error("HTTP " + res.status);
-      // success: the file is now the source of truth — bake new values as the
+      // success: the file is now the source of truth -- bake new values as the
       // baseline and clear the local override cache.
       document.querySelectorAll(".inline-field").forEach((el) => {
         el.dataset.inlineOrig = el.textContent;

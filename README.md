@@ -4,10 +4,10 @@
 
 In our vibecode apocalypse, when you want to change a bit of text on your web app
 or whatever, you have to go edit the file yourself in VS Code or prompt your LLM
-to change it. Obviously it would be easier to just edit it inline — so that's
+to change it. Obviously it would be easier to just edit it inline -- so that's
 what this does.
 
-(Heavier tools exist — TinaCMS, Decap/Netlify CMS, Builder.io — but nothing this
+(Heavier tools exist -- TinaCMS, Decap/Netlify CMS, Builder.io -- but nothing this
 small and portable. `inline` is a single script you can paste onto anything.)
 
 ## use it
@@ -44,7 +44,7 @@ node server.js            # serves the current folder on :5173
 node server.js --port 8080 --dir public
 ```
 
-Then open `http://localhost:5173/<page>?edit`, edit, and hit **save** — each edit
+Then open `http://localhost:5173/<page>?edit`, edit, and hit **save** -- each edit
 is an exact old → new text replacement in that page's source file (a one-time
 `.inline-bak` backup is written the first time a file is touched). It's perfect
 for plain static HTML; for framework source (`.astro`, `.jsx`, …) it still works
@@ -60,7 +60,7 @@ Pointing `save` at your own backend instead:
 The endpoint receives `{ path, edits: [{ key, old, new }] }`.
 
 `inline` only ever touches **leaf text** (`contenteditable="plaintext-only"`), so
-your tags, links, and layout are never mangled — just the words change.
+your tags, links, and layout are never mangled -- just the words change.
 
 ## configure (optional)
 
@@ -75,10 +75,10 @@ Add `data-inline-skip` to any element you never want to be editable.
 
 ## files
 
-- `inline.js` — the client (injects its own styles + toolbar); the only file you
+- `inline.js` -- the client (injects its own styles + toolbar); the only file you
   need to use the editor + *copy changes*
-- `server.js` — optional zero-dep dev server that makes **save** write to disk
-- `index.html` — a live demo / docs page
+- `server.js` -- optional zero-dep dev server that makes **save** write to disk
+- `index.html` -- a live demo / docs page
 
 ## license
 

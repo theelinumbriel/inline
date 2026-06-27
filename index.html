@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>inline — edit text on any page, in place</title>
+    <title>inline -- edit text on any page, in place</title>
     <meta name="description" content="a tiny, zero-dependency drop-in: click any text on a page and edit it inline." />
     <style>
       :root { --ink:#16150f; --muted:#7d786e; --line:rgba(20,18,12,.12); --paper:#fcfbf8; }
@@ -38,14 +38,14 @@
       <p data-inline-skip style="color:var(--muted);font-size:.95rem;margin-top:-.6rem">
         …or add <code>?edit</code> to the url, or press <kbd>⌘/Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>E</kbd>.
         click any line below, type, and watch the toolbar count your edits. hit
-        <em>copy changes</em> to get the JSON. reload — your edits stick (they live in this browser).
+        <em>copy changes</em> to get the JSON. reload -- your edits stick (they live in this browser).
       </p>
 
       <section class="demo">
         <h3>a little demo</h3>
         <p class="by">edit any of this →</p>
         <p>this paragraph is editable. so is the heading above it, and the caption.</p>
-        <p>inline only ever touches the <em>text</em> — your tags, links, and layout are left exactly as they were.</p>
+        <p>inline only ever touches the <em>text</em> -- your tags, links, and layout are left exactly as they were.</p>
       </section>
 
       <h2>drop it in</h2>
@@ -59,7 +59,7 @@ Inline.toggle()  # from the console / your own button</pre>
       <p data-inline-skip>
         every leaf line of text becomes <code>contenteditable</code> (plaintext-only, so markup
         can't be mangled). edits are saved to <code>localStorage</code>, keyed by a stable path, and
-        re-applied on every load — so they persist in your browser. <em>copy changes</em> hands you a
+        re-applied on every load -- so they persist in your browser. <em>copy changes</em> hands you a
         JSON map of <code>{ "selector": "new text" }</code> to paste back into your source and commit.
       </p>
 
